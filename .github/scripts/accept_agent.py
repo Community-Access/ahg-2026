@@ -239,7 +239,8 @@ def main() -> int:
     with out.open("a", encoding="utf-8") as fh:
         fh.write(f"status=accepted\npath={rel}\npractice={'true' if info['practice'] else 'false'}\n")
         # Untrusted text going into a workflow output: one safe line only.
-        title = re.sub(r"[^\w ,.'()-]", "", info["title"] or info["name"] or "practice agent")[:80]
+        label = f"practice agent from {login}" if info["practice"] else (info["title"] or info["name"])
+        title = re.sub(r"[^\w ,.'()-]", "", label)[:80]
         fh.write(f"title={title}\n")
     return 0
 

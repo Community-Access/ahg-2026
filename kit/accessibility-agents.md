@@ -1,7 +1,7 @@
 ---
 title: "Accessibility Agents, after today"
 lang: en
-author: "Jeff Bishop, BITS"
+author: "Jeff Bishop, University of Arizona, IT Accessibility Consultant"
 description: "What Accessibility Agents is, how to get it, and how to use it with your own agent after the AHG 2026 workshop."
 ---
 
@@ -107,7 +107,64 @@ assistant", copy the text for the entry point you want and paste it as your
 first message. Each text carries the entry point and the specialists it
 calls. Then give it your checker's results.
 
-### Where Accessibility Agents is available, as of 29 October 2026
+### On the web, at letitglow.app/accessibility-agents
+
+The Accessibility Agents page on GLOW works in any browser, with nothing to
+install.
+
+- Check something now, with no AI and no account: color contrast (WCAG and
+  APCA), reading level, the headings, links and form labels in some HTML, and
+  the guidelines for a component such as a modal or tabs.
+- Ask a question with your own AI. Choose OpenAI, Google Gemini, Claude or
+  OpenRouter, paste your key (or sign in with OpenRouter), and choose Show my
+  models to pick a model. Your key stays in that browser tab and is gone when
+  you close it. Gemini and OpenRouter both have free models.
+- Review a document. Choose a Word, Excel, PowerPoint, PDF, ePub, Markdown or
+  HTML file. The Accessibility Agents scanner checks the original file, then
+  your AI reviews it as the matching specialist, such as the Word specialist
+  for a .docx. The file is deleted as soon as it is scanned.
+- Get alt text for an image. Choose a PNG, JPEG, GIF or WebP image, and the
+  alt text specialist writes its alt text, a long description when it needs
+  one, and any text in the image. Your AI must be one that can see images;
+  most current models can.
+- Get alt text for every picture in a document. After choosing a Word,
+  PowerPoint, Excel, PDF or ePub file, choose "Write alt text for every
+  image". Your AI drafts each one, you check and edit them on the page, and
+  for a Word or PowerPoint file "Download the file with this alt text" gives
+  you the file back with the alt text in place.
+
+The answers come from your own AI, so they are a first draft: a person still
+reviews everything an agent writes.
+
+### Connect your assistant to the Accessibility Agents server
+
+Accessibility Agents runs a public server at
+`https://letitglow.app/a11y/mcp`. Add it to your assistant once and the
+assistant can run real checks instead of estimating: color contrast (WCAG and
+APCA), how colors look with color blindness, reading level, guidelines for a
+component such as a modal or tabs, and heading, link-text and form-label
+checks on HTML. It can also scan a Word, Excel, PowerPoint, PDF, ePub or
+Markdown file, and it hands your assistant the instructions of any of the
+113 specialists. Ask it to "write alt text for every picture in this
+document" and it shows your assistant each picture, writes the alt text with
+you, and gives you a link to the file with the alt text in place (Word,
+PowerPoint, Excel and ePub). In a chat in your browser, give it the file as a
+share link from OneDrive, Google Drive or Dropbox; a chat cannot always pass
+an attached file on. It needs no account on our side, it deletes your file as
+soon as it has worked on it, and the fixed file's link stops working after
+an hour.
+
+- ChatGPT, on a paid plan: Settings, Apps and Connectors, Advanced settings,
+  turn on Developer mode, then Create a connector with that address and no
+  authentication. On a campus plan, an administrator may have to allow it.
+- Claude: Settings, Connectors, Add custom connector, with that address.
+
+This is optional on the day. A free account and the pasted texts are enough
+for everything in the workshop. Step-by-step instructions for each assistant
+are on letitglow.app/accessibility-agents, under "Connect your AI
+assistant".
+
+### Where Accessibility Agents is available, as of 7 November 2026
 
 Each row is one place you might use it, whether it works there today, and how.
 
@@ -117,11 +174,16 @@ Each row is one place you might use it, whether it works there today, and how.
 | GitHub Codespaces | Yes, with the scanners | codespaces.new/Community-Access/accessibility-agents |
 | GitHub Copilot CLI, Claude Code, Codex, Gemini CLI | Yes, with the scanners and review hooks | The install lines above |
 | ChatGPT, on a free or paid account | Yes, by pasting | The texts on letitglow.app/ahg/assistant, as above |
+| Any browser, with your own AI key | Yes | letitglow.app/accessibility-agents: checks, questions, document review, and alt text for an image or every picture in a document |
+| ChatGPT or Claude, with the server connected | Yes, on plans that allow custom connectors | Connect `https://letitglow.app/a11y/mcp`, as above. Adds the real checks, document scans, alt text written into your file, and every specialist's instructions |
 | ChatGPT's plugin directory | Not yet | Being prepared. When it is listed, you will install it once from Plugins in ChatGPT's sidebar instead of pasting a text |
+| Claude's plugin directory | In review | Submitted. When it is listed, Claude can install the skills and the server connection in one step |
 | Claude, Gemini, Copilot on github.com, a campus assistant | Yes, by pasting | The same texts |
 
-ChatGPT itself: a free account works for the whole day. Sign in before you
-start, because ChatGPT without an account stops after a message or two.
+Sign in to your campus-approved assistant before you start. Free accounts
+have usage and message-length limits that can change. Save your latest agent
+after each revision. If a limit interrupts you, ask a helper to continue
+with a written example or another approved assistant.
 On the web and on a phone, ChatGPT reads skills only when they come in a
 plugin from its directory; until Accessibility Agents is listed there, the
 pasted texts are the way in. In every assistant, a skill that needs a
@@ -146,6 +208,13 @@ scanner asks for your checker's results instead.
   github.com/Community-Access/accessibility-agents.
 - The two rules still apply: nothing private goes into any AI, and a person
   reviews everything an agent writes.
+
+## Thanks
+
+This workshop is by Jeff Bishop, [University of Arizona](https://accessibility.arizona.edu), IT Accessibility
+Consultant, in collaboration with [Blind Information Technology Solutions (BITS)](https://www.bits-acb.org)
+and [Techopolis](https://www.techopolis.app). Special thanks to Taylor Arndt, who helped dream up
+and build Accessibility Agents.
 
 ## Sources
 

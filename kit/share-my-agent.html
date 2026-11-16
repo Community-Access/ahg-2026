@@ -21,6 +21,8 @@
   .skip-link:focus { top: 0.5rem; }
   header { border-bottom: 2px solid var(--line); padding: 0.75rem 0; }
   header p { margin: 0; font-weight: 700; }
+  .ahg-nav { list-style: none; padding: 0; margin: 0.5rem 0 0; display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; }
+  .ahg-nav li + li { margin-top: 0; }
   main { padding: 0.5rem 0 3rem; }
   main:focus { outline: none; }
   h1 { font-size: 2.2rem; line-height: 1.2; margin: 1.25rem 0 1rem; }
@@ -41,7 +43,7 @@
   fieldset { border: 2px solid var(--fg); padding: 0.5rem 1rem 1rem; margin-top: 1.5rem; min-width: 0; }
   fieldset label { font-weight: 400; margin-top: 0.5rem; }
   .hint { margin: 0.25rem 0 0.5rem; }
-  input[type="text"], input[type="email"], input[type="file"], textarea { font: inherit; width: 100%; padding: 0.5rem;
+  input[type="text"], input[type="email"], input[type="file"], textarea, select { font: inherit; width: 100%; padding: 0.5rem;
          border: 2px solid var(--fg); background: var(--bg); color: var(--fg); }
   input[type="radio"], input[type="checkbox"] { width: 1.25rem; height: 1.25rem; margin-right: 0.5rem; vertical-align: -0.1em; }
   textarea { min-height: 12rem; }
@@ -68,6 +70,15 @@
 <header>
   <div class="wrap">
     <p><a href="https://letitglow.app/ahg">AHG 2026: Accessibility Agents</a></p>
+    <nav aria-label="Workshop pages">
+      <ul class="ahg-nav">
+        <li><a href="https://letitglow.app/ahg/paths">Choose a path</a></li>
+        <li><a href="https://letitglow.app/ahg/assistant">Browser path</a></li>
+        <li><a href="https://letitglow.app/ahg/kit">The kit</a></li>
+        <li><a href="https://letitglow.app/ahg/site">Sample course</a></li>
+        <li><a href="https://letitglow.app/ahg/share">Share your agent</a></li>
+      </ul>
+    </nav>
   </div>
 </header>
 <main id="main" tabindex="-1">
@@ -77,6 +88,9 @@
 <p>One form, one button. Your agent goes into the AHG 2026 collection with
 your name on it, and you get a reply within about a minute. No Git, no fork,
 no pull request.</p>
+<p>Before opening the GitHub form, confirm that public sharing is approved
+and remove private or non-public information. Opening the form sends your
+agent text to GitHub, even before you submit it.</p>
 
 <form id="share-form" novalidate>
   <fieldset>
@@ -107,7 +121,7 @@ no pull request.</p>
 
 <h2>What happens on GitHub</h2>
 <ol>
-  <li>GitHub opens the "Share my agent" form, already filled in: the workshop code, which agent it is, and your agent.</li>
+  <li>GitHub opens the "Share my agent" form with the workshop code and your agent filled in. Check that the agent type is selected: choose "My practice agent" before the day, or "My real agent" on the day.</li>
   <li>Move to the end of the form and select the privacy check box: your agent contains nothing private.</li>
   <li>Press <strong>Submit new issue</strong>.</li>
 </ol>
@@ -117,7 +131,7 @@ fix it, and save, and it is checked again straight away. Your agent is
 committed in your name, so it shows on your own GitHub profile.</p>
 
 <h2>If anything goes wrong</h2>
-<p>Raise a hand, or write to <a href="mailto:support@community-access.org">support@community-access.org</a>. If you are stuck,
+<p>Raise a hand, or write to <a href="mailto:jeffbis@arizona.edu">jeffbis@arizona.edu</a>. If you are stuck,
 share one of the <a href="https://letitglow.app/ahg/kit#examples-agents">ready-made agents</a>
 (in the kit, <code>examples/agents/</code>) with your name on its author
 line. That counts.</p>
@@ -140,6 +154,24 @@ line. That counts.</p>
 <script>
 (function () {
   "use strict";
+  function downloadSkillMarkdown(body, filename) {
+  var url = "";
+  var link = document.createElement("a");
+  try {
+    url = URL.createObjectURL(new Blob([body.trim() + "\n"], { type: "text/markdown;charset=utf-8" }));
+    link.href = url;
+    link.download = filename || "SKILL.md";
+    document.body.appendChild(link);
+    link.click();
+    window.setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    return true;
+  } catch (error) {
+    if (url) { URL.revokeObjectURL(url); }
+    return false;
+  } finally {
+    link.remove();
+  }
+}
   // ?repo=owner/name sends to a test copy for rehearsals; ?practice=1 starts
   // on "practice". Anything else in the address is ignored.
   var params = new URLSearchParams(window.location.search);
@@ -222,15 +254,10 @@ line. That counts.</p>
       showEmpty("Your agent is empty. Paste it in, or choose your SKILL.md file.");
       return;
     }
-    var url = URL.createObjectURL(new Blob([body + "
-"], { type: "text/markdown;charset=utf-8" }));
-    var link = document.createElement("a");
-    link.href = url;
-    link.download = "SKILL.md";
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    window.setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    if (!downloadSkillMarkdown(body)) {
+      say("The download could not start. Copy your agent into a plain-text editor and save it as SKILL.md.");
+      return;
+    }
     say("Your browser is saving SKILL.md, usually to your Downloads folder.");
   });
 
@@ -273,11 +300,11 @@ line. That counts.</p>
     if (url.length > MAX_URL) {
       say("Your agent is longer than GitHub accepts in one link. Open the <a href=\"https://github.com/" + REPO +
           "/issues/new?template=submit-agent.yml\" target=\"_blank\" rel=\"noopener\">share form on GitHub</a> " +
-          "and paste your agent into it.");
+          "and paste your agent into it. Select the agent type and the privacy check box before submitting.");
       return;
     }
     window.open(url, "_blank", "noopener");
-    say("The share form is open in a new tab, filled in. Select the privacy check box, then press Submit new issue. " +
+    say("The share form is open in a new tab. Confirm the agent type; if it is blank, select \"" + kind + "\". Select the privacy check box, then press Submit new issue. " +
         "If no tab opened, <a href=\"" + url + "\" target=\"_blank\" rel=\"noopener\">open the share form</a>.");
   });
 }());
